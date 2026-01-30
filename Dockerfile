@@ -2,7 +2,7 @@ FROM --platform=$BUILDPLATFORM alpine:latest
 
 WORKDIR /home
 
-RUN apk add build-base clang texlive-binextra
+RUN apk add build-base clang texlive-full
 
 COPY src src
 
