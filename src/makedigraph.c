@@ -15,11 +15,12 @@ char names[maxn][maxl+1];
 char nbuf[maxl+1];
 char filenamebuf[ID_FIELD_SIZE+8]= "/tmp/makegraph.gb";
 int main(int argc,char*argv[]){
-register int j,k,m,n,d;
+register int j,k,m,n,s;
+register long d;
 Graph*g;
 Vertex*u,*v;
 /*2:*/
-#line 33 "makedigraph.w"
+#line 34 "makedigraph.w"
 
 buf[bufsize]= '\n';
 if(!fgets(buf,bufsize,stdin)){
@@ -42,10 +43,10 @@ hash_setup(g);
 printf("I've created a graph with %d vertices...\n",n);
 
 /*:2*/
-#line 28 "makedigraph.w"
+#line 29 "makedigraph.w"
 ;
 /*3:*/
-#line 54 "makedigraph.w"
+#line 55 "makedigraph.w"
 
 for(m= 0;;m++){
 if(!fgets(buf,bufsize,stdin))break;
@@ -66,16 +67,17 @@ fprintf(stderr,"Unknown second vertex: %s",buf);
 exit(-4);
 }
 for(;buf[k]==' ';k++);
+if(buf[k]=='-')s= -1,k++;else s= +1;
 for(d= 0;buf[k]>='0'&&buf[k]<='9';k++)d= 10*d+buf[k]-'0';
-gb_new_arc(u,v,d);
+gb_new_arc(u,v,s*d);
 }
 printf(" and %d arcs...\n",m);
 
 /*:3*/
-#line 29 "makedigraph.w"
+#line 30 "makedigraph.w"
 ;
 /*4:*/
-#line 79 "makedigraph.w"
+#line 81 "makedigraph.w"
 
 if(argc> 1){
 sprintf(g->id,"%.*s",ID_FIELD_SIZE-1,argv[1]);
@@ -85,7 +87,7 @@ save_graph(g,filenamebuf);
 printf(" and file %s holds the result.\n",filenamebuf);
 
 /*:4*/
-#line 30 "makedigraph.w"
+#line 31 "makedigraph.w"
 ;
 }
 

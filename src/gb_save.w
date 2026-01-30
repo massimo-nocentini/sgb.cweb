@@ -407,7 +407,15 @@ corrective actions to be taken in each case, assuming that
 static long anomalies; /* problems accumulated by |save_graph| */
 static FILE *save_file; /* the file being written */
 
-@ @<External f...@>=
+@ We open the file in binary mode. This makes no difference on
+UNIX-like operating systems; but it prevents Windows-like systems
+from converting the single internal character |'\n'| to the
+two external characters |'\r'| and |'\n'|.
+(Indeed, with text mode, a graph saved under Windows
+cannot be restored under Linux!
+But with binary mode that problem goes away.)
+
+@<External f...@>=
 long save_graph(g,f)
   Graph *g; /* graph to be saved */
   char *f; /* name of the file to be created */
@@ -415,7 +423,7 @@ long save_graph(g,f)
   if (g==NULL || g->vertices==NULL) return -1; /* where is |g|? */
   anomalies=0;
   @<Figure out the extent of |g|'s internal records@>;
-  save_file=fopen(f,"w");
+  save_file=fopen(f,"wb");
   if (!save_file) return -2; /* oops, the operating system won't cooperate */
   @<Translate |g| into external format@>;
   @<Make notes at the end of the file about any changes that were necessary@>;

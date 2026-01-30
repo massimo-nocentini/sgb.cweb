@@ -40,25 +40,21 @@ SYS = -DSYSV
 #   If you prefer optimization to debugging, change -g to something like -O:
 CFLAGS = -O3 -I$(INCLUDEDIR) $(SYS) -fPIC -Wno-deprecated-non-prototype -Wno-implicit-int
 
-converters:
+install_graph_helpers:
 	ctangle makegraph.w makegraph.c
 	ctangle makedigraph.w makedigraph.c
-	cweave makegraph.w makegraph.tex
-	cweave makedigraph.w makedigraph.tex
-	tex makegraph.tex
-	tex makedigraph.tex
-	dvipdf makegraph.dvi
-	dvipdf makedigraph.dvi
+	$(CC) $(CFLAGS) makegraph.c -o makegraph $(LDFLAGS) $(LDLIBS)
+	$(CC) $(CFLAGS) makedigraph.c -o makedigraph $(LDFLAGS) $(LDLIBS) 
+	cp makegraph makedigraph $(BINDIR)/
 
 #   This is our own addition to compile everything, doc included for kernel files:
 complete:
 	make clean
-	make converters
 	make tests
-	sudo make install
-	sudo make installdemos
+	make install
+	make installdemos
+	make install_graph_helpers
 	make doc
-	
 
 ########## You shouldn't have to change anything after this point ##########
 
@@ -93,7 +89,7 @@ LOADLIBES = $(LDLIBS)
 
 DATAFILES = anna.dat david.dat econ.dat games.dat homer.dat huck.dat \
         jean.dat lisa.dat miles.dat roget.dat words.dat
-KERNELFILES = gb_flip.w gb_graph.w gb_io.w gb_sort.w makegraph.w makedigraph.w
+KERNELFILES = gb_flip.w gb_graph.w gb_io.w gb_sort.w
 GENERATORFILES = gb_basic.w gb_books.w gb_econ.w gb_games.w gb_gates.w \
         gb_lisa.w gb_miles.w gb_plane.w gb_raman.w gb_rand.w gb_roget.w \
         gb_words.w
@@ -196,6 +192,9 @@ doc:
 	cweave gb_rand.w && tex gb_rand.tex && dvipdf gb_rand.dvi
 	cweave gb_roget.w && tex gb_roget.tex && dvipdf gb_roget.dvi
 	cweave gb_words.w && tex gb_words.tex && dvipdf gb_words.dvi
+	cweave makegraph.w && tex makegraph.tex && dvipdf makegraph.dvi
+	cweave makedigraph.w && tex makedigraph.tex && dvipdf makedigraph.dvi
+	
 
 clean:
 	rm -f *~ *.o *.c *.h libgb.a certified \

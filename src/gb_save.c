@@ -35,7 +35,7 @@
 #line 56 "gb_save.w"
 
 /*21:*/
-#line 449 "gb_save.w"
+#line 457 "gb_save.w"
 
 typedef struct{
 char*start_addr;
@@ -69,13 +69,13 @@ static long anomalies;
 static FILE*save_file;
 
 /*:19*//*22:*/
-#line 468 "gb_save.w"
+#line 476 "gb_save.w"
 
 static block_rep*blocks;
 static Area working_storage;
 
 /*:22*//*34:*/
-#line 669 "gb_save.w"
+#line 677 "gb_save.w"
 
 static char*buf_ptr;
 static long magic;
@@ -177,7 +177,7 @@ return 0;
 }
 
 /*:14*//*25:*/
-#line 519 "gb_save.w"
+#line 527 "gb_save.w"
 
 static void classify(l,t)
 util*l;
@@ -198,7 +198,7 @@ break;
 }
 if(l->I==0)return;
 /*26:*/
-#line 546 "gb_save.w"
+#line 554 "gb_save.w"
 
 loc= (char*)l->V;
 for(cur_block= blocks;cur_block->start_addr> loc;cur_block++);
@@ -210,12 +210,12 @@ else if(cur_block->cat!=tcat)cur_block->cat= mxt;
 }
 
 /*:26*/
-#line 538 "gb_save.w"
+#line 546 "gb_save.w"
 ;
 }
 
 /*:25*//*35:*/
-#line 673 "gb_save.w"
+#line 681 "gb_save.w"
 
 static void flushout()
 {
@@ -227,7 +227,7 @@ buf_ptr= buffer;
 }
 
 /*:35*//*36:*/
-#line 687 "gb_save.w"
+#line 695 "gb_save.w"
 
 static void prepare_string(s)
 char*s;
@@ -246,7 +246,7 @@ sready:*p= '"';
 }
 
 /*:36*//*37:*/
-#line 710 "gb_save.w"
+#line 718 "gb_save.w"
 
 static void move_item()
 {register long l= strlen(item_buf);
@@ -270,7 +270,7 @@ buf_ptr+= l;
 }
 
 /*:37*//*39:*/
-#line 748 "gb_save.w"
+#line 756 "gb_save.w"
 
 static void translate_field(l,t)
 util*l;
@@ -294,7 +294,7 @@ tcat= vrt;tsize= sizeof(Vertex);break;
 case'A':tcat= ark;tsize= sizeof(Arc);break;
 }
 /*40:*/
-#line 774 "gb_save.w"
+#line 782 "gb_save.w"
 
 loc= (char*)l->V;
 item_buf[0]= '0';item_buf[1]= '\0';
@@ -312,7 +312,7 @@ sprintf(item_buf,"%c%ld",t,
 cur_block->offset+((loc-cur_block->start_addr)/tsize));
 
 /*:40*/
-#line 770 "gb_save.w"
+#line 778 "gb_save.w"
 ;
 ready:move_item();
 }
@@ -452,35 +452,35 @@ sorry:gb_raw_close();gb_recycle(g);return NULL;
 }
 
 /*:4*//*20:*/
-#line 410 "gb_save.w"
+#line 418 "gb_save.w"
 
 long save_graph(g,f)
 Graph*g;
 char*f;
 {/*24:*/
-#line 497 "gb_save.w"
+#line 505 "gb_save.w"
 
 register block_rep*cur_block;
 long block_count;
 
 /*:24*//*31:*/
-#line 630 "gb_save.w"
+#line 638 "gb_save.w"
 
 long m;
 long n;
 register long s;
 
 /*:31*/
-#line 414 "gb_save.w"
+#line 422 "gb_save.w"
 
 if(g==NULL||g->vertices==NULL)return-1;
 anomalies= 0;
 /*27:*/
-#line 559 "gb_save.w"
+#line 567 "gb_save.w"
 
 {long activity;
 /*23:*/
-#line 480 "gb_save.w"
+#line 488 "gb_save.w"
 
 {Area t;
 for(*t= *(g->data),block_count= 0;*t;*t= (*t)->next)block_count++;
@@ -499,7 +499,7 @@ cur_block->end_addr= (char*)*t;
 }
 
 /*:23*/
-#line 561 "gb_save.w"
+#line 569 "gb_save.w"
 ;
 lookup(g->vertices,'V');
 lookup(g->uu,g->util_types[8]);
@@ -512,7 +512,7 @@ do{activity= 0;
 for(cur_block= blocks;cur_block->end_addr;cur_block++){
 if(cur_block->cat==vrt&&!cur_block->expl)
 /*28:*/
-#line 588 "gb_save.w"
+#line 596 "gb_save.w"
 
 {register Vertex*v;
 for(v= (Vertex*)cur_block->start_addr;
@@ -528,11 +528,11 @@ lookup(v->z,g->util_types[5]);
 }
 
 /*:28*/
-#line 572 "gb_save.w"
+#line 580 "gb_save.w"
 
 else if(cur_block->cat==ark&&!cur_block->expl)
 /*29:*/
-#line 602 "gb_save.w"
+#line 610 "gb_save.w"
 
 {register Arc*a;
 for(a= (Arc*)cur_block->start_addr;
@@ -545,7 +545,7 @@ lookup(a->b,g->util_types[7]);
 }
 
 /*:29*/
-#line 574 "gb_save.w"
+#line 582 "gb_save.w"
 
 else continue;
 cur_block->expl= activity= 1;
@@ -554,18 +554,18 @@ cur_block->expl= activity= 1;
 }
 
 /*:27*/
-#line 417 "gb_save.w"
+#line 425 "gb_save.w"
 ;
-save_file= fopen(f,"w");
+save_file= fopen(f,"wb");
 if(!save_file)return-2;
 /*30:*/
-#line 615 "gb_save.w"
+#line 623 "gb_save.w"
 
 /*32:*/
-#line 641 "gb_save.w"
+#line 649 "gb_save.w"
 
 m= 0;/*33:*/
-#line 658 "gb_save.w"
+#line 666 "gb_save.w"
 
 n= 0;
 for(cur_block= blocks+block_count-1;cur_block>=blocks;cur_block--)
@@ -575,7 +575,7 @@ break;
 }
 
 /*:33*/
-#line 642 "gb_save.w"
+#line 650 "gb_save.w"
 ;
 for(cur_block= blocks+block_count-1;cur_block>=blocks;cur_block--){
 if(cur_block->cat==vrt){
@@ -593,10 +593,10 @@ m+= s;
 }
 
 /*:32*/
-#line 616 "gb_save.w"
+#line 624 "gb_save.w"
 ;
 /*38:*/
-#line 732 "gb_save.w"
+#line 740 "gb_save.w"
 
 buf_ptr= buffer;
 magic= 0;
@@ -609,10 +609,10 @@ else fputc('Z',save_file);
 fprintf(save_file,",%ldV,%ldA)\n",n,m);
 
 /*:38*/
-#line 617 "gb_save.w"
+#line 625 "gb_save.w"
 ;
 /*41:*/
-#line 790 "gb_save.w"
+#line 798 "gb_save.w"
 
 prepare_string(g->id);
 if(strlen(g->id)> MAX_SV_ID){
@@ -632,17 +632,17 @@ trans(g->zz,g->util_types[13]);
 flushout();
 
 /*:41*/
-#line 618 "gb_save.w"
+#line 626 "gb_save.w"
 ;
 /*42:*/
-#line 808 "gb_save.w"
+#line 816 "gb_save.w"
 
 {register Vertex*v;
 fputs("* Vertices\n",save_file);
 for(cur_block= blocks+block_count-1;cur_block>=blocks;cur_block--)
 if(cur_block->cat==vrt&&cur_block->offset==0)
 /*43:*/
-#line 819 "gb_save.w"
+#line 827 "gb_save.w"
 
 for(v= (Vertex*)cur_block->start_addr;
 v<=(Vertex*)cur_block->end_addr;v++){
@@ -659,12 +659,12 @@ flushout();
 }
 
 /*:43*/
-#line 813 "gb_save.w"
+#line 821 "gb_save.w"
 ;
 for(cur_block= blocks+block_count-1;cur_block>=blocks;cur_block--)
 if(cur_block->cat==vrt&&cur_block->offset!=0)
 /*43:*/
-#line 819 "gb_save.w"
+#line 827 "gb_save.w"
 
 for(v= (Vertex*)cur_block->start_addr;
 v<=(Vertex*)cur_block->end_addr;v++){
@@ -681,15 +681,15 @@ flushout();
 }
 
 /*:43*/
-#line 816 "gb_save.w"
+#line 824 "gb_save.w"
 ;
 }
 
 /*:42*/
-#line 619 "gb_save.w"
+#line 627 "gb_save.w"
 ;
 /*44:*/
-#line 834 "gb_save.w"
+#line 842 "gb_save.w"
 
 {register Arc*a;
 fputs("* Arcs\n",save_file);
@@ -707,22 +707,22 @@ flushout();
 }
 
 /*:44*/
-#line 620 "gb_save.w"
+#line 628 "gb_save.w"
 ;
 /*45:*/
-#line 850 "gb_save.w"
+#line 858 "gb_save.w"
 
 fprintf(save_file,"* Checksum %ld\n",magic);
 
 /*:45*/
-#line 621 "gb_save.w"
+#line 629 "gb_save.w"
 ;
 
 /*:30*/
-#line 420 "gb_save.w"
+#line 428 "gb_save.w"
 ;
 /*46:*/
-#line 853 "gb_save.w"
+#line 861 "gb_save.w"
 
 if(anomalies){
 fputs("> WARNING: I had trouble making this file from the given graph!\n",
@@ -753,7 +753,7 @@ save_file);
 }
 
 /*:46*/
-#line 421 "gb_save.w"
+#line 429 "gb_save.w"
 ;
 fclose(save_file);
 gb_free(working_storage);
